@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QDir>
 #include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -67,14 +68,19 @@ void MainWindow::on_modifyButton_clicked()
 
     // XOR empty check
     if (xorValue.isEmpty()) {
-        qDebug() << "XOR value is empty. Please enter a valid XOR value.";
+        QMessageBox::warning(nullptr, "Error", "XOR value is empty. Please enter a valid XOR value.");
+        return;
+    }
+
+    if(savePath == ""){
+        QMessageBox::warning(nullptr, "Error", "Enter your path");
         return;
     }
 
     // check path
     QDir dir(savePath);
     if (!dir.exists()) {
-        qDebug() << "Save path does not exist. Please enter a valid path.";
+        QMessageBox::warning(nullptr, "Error", "Save path does not exist. Please enter a valid path.");
         return;
     }
 
@@ -87,7 +93,7 @@ void MainWindow::on_modifyButton_clicked()
     } else { //timer launch
         int interval = ui->frequencyTimeEdit->time().msecsSinceStartOfDay();
         if (interval <= 0) {
-            qDebug() << "Invalid timer interval. It must be greater than 0.";
+            QMessageBox::warning(nullptr, "Error", "Invalid timer interval. It must be greater than 0.");
             return;
         }
 
@@ -102,7 +108,6 @@ void MainWindow::on_modifyButton_clicked()
         connect(this, &MainWindow::destroyed, timer, &QTimer::stop);  // stop timer if window closed
         timer->start(interval);
     }
-    delete fileOps;
 }
 
 

@@ -14,7 +14,7 @@ bool FileOperations::foolCheck(const QString &filePath) {
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadWrite)) {
-        QMessageBox::warning(nullptr, "Error", "The file could not be opened. \nIt is possible that the file has already been opened by another application.");
+        QMessageBox::warning(nullptr, "Error", "The file "+ filePath +" could not be opened. \nIt is possible that the file has already been opened by another application.");
         return false;
     }
 
@@ -25,18 +25,18 @@ bool FileOperations::foolCheck(const QString &filePath) {
 void FileOperations::modifyFiles() {
 
     if (outputDirectory.isEmpty()) {
-        qDebug() << "Output directory is empty!";
+        QMessageBox::warning(nullptr, "Error", "Output directory is empty!");
         return;
     }
 
     QDir dir(outputDirectory);
     if (!dir.exists()) {
-        qDebug() << "Directory does not exist:" << outputDirectory;
+        QMessageBox::warning(nullptr, "Error", "Directory " + outputDirectory +" does not exist:");
         return;
     }
 
     if (!dir.exists()) {
-        qDebug() << "Input directory does not exist:" << outputDirectory;
+        QMessageBox::warning(nullptr, "Error", "Input directory " + outputDirectory +" does not exist:");
         return;
     }
 
@@ -61,7 +61,7 @@ void FileOperations::modifyFile(const QString& filePath) {
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Cannot open file for reading:" << filePath;
+        QMessageBox::warning(nullptr, "Error", "Cannot open file for reading: " + filePath);
         return;
     }
 
@@ -70,7 +70,7 @@ void FileOperations::modifyFile(const QString& filePath) {
 
     // checking if XOR is empty
     if (xorValue.isEmpty()) {
-        qDebug() << "XOR value is empty. Skipping file modification.";
+        QMessageBox::warning(nullptr, "Error", "XOR value is empty. Skipping file modification.");
         return;
     }
 
