@@ -33,7 +33,17 @@ private:
     QByteArray xorValue;
     bool oneTimeLaunch;
 
+    /**
+     * @brief modifyFile - main func for modify files
+     * @param filePath
+     */
     void modifyFile(const QString& filePath);
+    /**
+     * @brief foolCheck - func for checking file access/
+     * @param filePath
+     * @return - return true if file not opened another program (like MS Word), else - return false
+     */
+    bool foolCheck(const QString &filePath);
 
 };
 

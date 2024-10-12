@@ -2,11 +2,25 @@
 #include <QFile>
 #include <QDir>
 #include <QDebug>
+#include <QLockFile>
+#include <QMessageBox>
 
 
 FileOperations::FileOperations(const QString& mask, const QString& outputDir, bool removeOriginal, bool overwrite, const QByteArray& xorVal, bool oneTimeLaunch)
     : fileMask(mask), outputDirectory(outputDir), removeOriginalFiles(removeOriginal), overwriteExistingFiles(overwrite), xorValue(xorVal), oneTimeLaunch(oneTimeLaunch){}
 
+
+bool FileOperations::foolCheck(const QString &filePath) {
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::ReadWrite)) {
+        QMessageBox::warning(nullptr, "Error", "The file could not be opened. \nIt is possible that the file has already been opened by another application.");
+        return false;
+    }
+
+    file.close();
+    return true;
+}
 
 void FileOperations::modifyFiles() {
 
@@ -32,7 +46,9 @@ void FileOperations::modifyFiles() {
 
     foreach (const QString& file, files) {
         QString filePath = dir.absoluteFilePath(file);
-        modifyFile(filePath);
+        if(foolCheck(filePath)){
+            modifyFile(filePath);
+        }
     }
 }
 

@@ -88,7 +88,7 @@ void MainWindow::on_modifyButton_clicked()
         int interval = ui->frequencyTimeEdit->time().msecsSinceStartOfDay();
         if (interval <= 0) {
             qDebug() << "Invalid timer interval. It must be greater than 0.";
-            return;  // Возврат, если интервал некорректен
+            return;
         }
 
         QTimer *timer = new QTimer(this);
@@ -99,15 +99,16 @@ void MainWindow::on_modifyButton_clicked()
                 qDebug() << "Error during file modification:" << e.what();
             }
         });
-        connect(this, &MainWindow::destroyed, timer, &QTimer::stop);  // Остановить таймер при закрытии окна
+        connect(this, &MainWindow::destroyed, timer, &QTimer::stop);  // stop timer if window closed
         timer->start(interval);
     }
+    delete fileOps;
 }
 
 
 void MainWindow::on_browseButton_clicked() //func for browse button, which need to select directory
 {
-    // Открываем диалог для выбора директории
+    // browse directory
     QString dirName = QFileDialog::getExistingDirectory(this,
                                                         tr("Select Directory"),
                                                         "",
