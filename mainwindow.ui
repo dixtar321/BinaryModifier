@@ -185,6 +185,18 @@
        </property>
       </widget>
      </item>
+     <item row="7" column="0">
+      <widget class="QCheckBox" name="hexCheckBox">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Use HEX value</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="mainLabel">

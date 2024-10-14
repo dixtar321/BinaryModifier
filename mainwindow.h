@@ -25,10 +25,13 @@ private slots:
     void on_modifyButton_clicked(); //!modify button (the required fields must be filled in)
     void on_browseButton_clicked(); //!button for find directory
 
+    void on_hexCheckBox_toggled(bool checked); //check hex value or not hex
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer = nullptr; //! at the beginning timer is nullptr
     FileOperations *fileOps = nullptr; //! at the beginning fileOps is nullptr
+    bool isHex(const QString &str);
 };
 
 #endif // MAINWINDOW_H

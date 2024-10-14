@@ -21,6 +21,12 @@ MainWindow::~MainWindow()
     delete timer;
 }
 
+bool MainWindow::isHex(const QString &str) {
+    bool hexCheck;
+    str.toULongLong(&hexCheck, 16);
+    return hexCheck;
+}
+
 /**
  * @brief MainWindow::on_deleteCheckBox_toggled - if user will choose delete origin files - overwrite file will remove, else - add overwrite
  * @param checked - bool param for deleteCheckBox
@@ -63,12 +69,18 @@ void MainWindow::on_modifyButton_clicked()
     QString savePath = ui->savePathLine->text();
     bool deleteInput = ui->deleteCheckBox->isChecked();
     bool overwrite = (ui->fileExistComboBox->currentIndex() == 1);
-    QByteArray xorValue = ui->lineEdit->text().toUtf8();
+    QString xorValue = ui->lineEdit->text();
     bool oneTimeLaunch = ui->oneTimeLaunchComboBox->isChecked();
+    bool usingHex = ui->hexCheckBox->isChecked();
 
     // XOR empty check
     if (xorValue.isEmpty()) {
         QMessageBox::warning(nullptr, "Error", "XOR value is empty. Please enter a valid XOR value.");
+        return;
+    }
+
+    if(usingHex && !isHex(xorValue)){
+        QMessageBox::warning(nullptr, "Error", "XOR value is not hex");
         return;
     }
 
@@ -84,9 +96,11 @@ void MainWindow::on_modifyButton_clicked()
         return;
     }
 
-    if (fileOps == nullptr) {
-        fileOps = new FileOperations(fileMask, savePath, deleteInput, overwrite, xorValue, oneTimeLaunch);
+    if (fileOps != nullptr) { //added delete, bug fixed)
+        delete fileOps;
     }
+    fileOps = new FileOperations(fileMask, savePath, deleteInput, overwrite, xorValue, oneTimeLaunch, usingHex);
+
 
     if (oneTimeLaunch) {
         fileOps->modifyFiles();  // One-Time launch program
@@ -137,4 +151,15 @@ void MainWindow::on_browseButton_clicked() //func for browse button, which need 
     qDebug() << "Path set to QLineEdit:" << ui->savePathLine->text();
 }
 
+
+
+void MainWindow::on_hexCheckBox_toggled(bool checked)
+{
+    if(checked){
+        qDebug() << "Using Hex value" << checked;
+    }else{
+        qDebug() << "NotUsing Hex value" << checked;
+    }
+
+}
 

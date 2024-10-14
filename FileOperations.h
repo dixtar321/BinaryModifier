@@ -19,7 +19,7 @@ class FileOperations {
  */
 public:
     FileOperations(const QString& mask, const QString& outputPath, bool removeOriginal,
-                   bool overwrite, const QByteArray& xorValue, bool oneTimeLaunch);
+                   bool overwrite, const QString& xorValue, bool oneTimeLaunch, bool useHexValue);
     /**
      * @brief modifyFiles - main function for modifying files
      */
@@ -30,8 +30,9 @@ private:
     QString outputDirectory;
     bool removeOriginalFiles;
     bool overwriteExistingFiles;
-    QByteArray xorValue;
+    QString xorValue;
     bool oneTimeLaunch;
+    bool useHexValue;
 
     /**
      * @brief modifyFile - main func for modify files
@@ -44,6 +45,12 @@ private:
      * @return - return true if file not opened another program (like MS Word), else - return false
      */
     bool foolCheck(const QString &filePath);
+    /**
+     * @brief hexToBytes - func for convert hex to Bytes
+     * @param str - string from user input
+     * @return
+     */
+    QByteArray hexToBytes(const QString &str);
 
 };
 
